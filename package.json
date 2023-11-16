@@ -1,0 +1,26 @@
+{
+  "name": "project-generator-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc --noEmit ./index.ts && esbuild index.ts --bundle --platform=node --format=cjs --outfile=dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Julian Stephens <julian@julianstephens.net>",
+  "license": "ISC",
+  "bin": {
+    "gen": "./dist/index.js"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "ora": "^7.0.1",
+    "zx": "^7.2.3"
+  },
+  "devDependencies": {
+    "@commander-js/extra-typings": "^11.1.0",
+    "@types/node": "^20.9.0",
+    "typescript": "^5.2.2"
+  }
+}
