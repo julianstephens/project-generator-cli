@@ -13,5 +13,14 @@ py.requiredOption("-n, --name <name>", "Project name")
   .option("-l, --local", "Do not create remote repo")
   .action((options) => {
     const args = [options.name, options.private, options.emoji, options.local];
-    childProcess.fork(path.join(__dirname, "create.mjs"), args as any);
+    const base = childProcess.fork(
+      path.join(__dirname, "..", "scripts", "base.mjs"),
+      args as any,
+    );
+    base.on("exit", () => {
+      childProcess.fork(path.join(__dirname, "..", "scripts", "py.mjs"), [
+        options.name,
+        `${options.local}`,
+      ]);
+    });
   });
