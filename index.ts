@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import { Command } from "@commander-js/extra-typings";
-import { py } from "./commands/py.js";
+import py from "./commands/py";
+import ts from "./commands/ts";
 
 export const program = new Command();
 
@@ -9,10 +10,11 @@ program
   .name("gen")
   .description("CLI to generate a project template")
   .version("0.1.0")
-  .addCommand(py);
+  .addCommand(py)
+  .addCommand(ts);
 
 const main = async () => {
   await program.parseAsync();
 };
 
-main();
+main().catch((error) => error.bind(console.error));
