@@ -1,6 +1,8 @@
 import fs from "fs";
-import os from "os";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const searchReplaceFile = async (findExp, replace, file) => {
   const helper = async (exp, rep, loc) => {
@@ -18,13 +20,7 @@ const searchReplaceFile = async (findExp, replace, file) => {
   }
 };
 
-const SRC_DIR = path.join(
-  os.homedir(),
-  "workspace",
-  "project-generator-cli",
-  "dist",
-  "bundle",
-);
+const SRC_DIR = path.join(__dirname, "..", "dist", "bundle");
 
 const COMMON_BUNDLE = path.join(SRC_DIR, "common");
 
