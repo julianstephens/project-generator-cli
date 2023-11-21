@@ -5,15 +5,15 @@ A CLI tool for scaffolding minimal project templates with sane defaults.
 ## Prerequisites
 
 ### General
-- Git
-- GH CLI (for creating GH remotes, otherwise use the `-l` or `--local` flag to skip)
+- [Git](https://git-scm.com/downloads)
+- [GitHub CLI](https://cli.github.com/) (for creating GH remotes, otherwise use the `-l` or `--local` flag to skip)
 
 ### Python
-- Poetry
+- [Poetry](https://python-poetry.org/docs/#installation)
 
 ### Typescript
-- Node >=v18
-- pnpm
+- [Node](https://nodejs.org/en) >=v18
+- [pnpm](https://pnpm.io/installation)
 
 ## Installation
 
