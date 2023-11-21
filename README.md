@@ -33,4 +33,8 @@ export WORKSPACE_DIR=/path/to/your/project/workspace
 cd /path/to/project-generator-cli
 pnpm link --global
 ```
+## Usage
 
+```sh
+gen help
+```
