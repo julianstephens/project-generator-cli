@@ -935,8 +935,8 @@ var require_suggestSimilar = __commonJS({
 var require_command = __commonJS({
   "node_modules/.pnpm/commander@11.1.0/node_modules/commander/lib/command.js"(exports) {
     var EventEmitter = require("events").EventEmitter;
-    var childProcess3 = require("child_process");
-    var path3 = require("path");
+    var childProcess4 = require("child_process");
+    var path4 = require("path");
     var fs = require("fs");
     var process = require("process");
     var { Argument: Argument2, humanReadableArgName } = require_argument();
@@ -1769,10 +1769,10 @@ Expecting one of '${allowedValues.join("', '")}'`);
         let launchWithNode = false;
         const sourceExt = [".js", ".ts", ".tsx", ".mjs", ".cjs"];
         function findFile(baseDir, baseName) {
-          const localBin = path3.resolve(baseDir, baseName);
+          const localBin = path4.resolve(baseDir, baseName);
           if (fs.existsSync(localBin))
             return localBin;
-          if (sourceExt.includes(path3.extname(baseName)))
+          if (sourceExt.includes(path4.extname(baseName)))
             return void 0;
           const foundExt = sourceExt.find((ext) => fs.existsSync(`${localBin}${ext}`));
           if (foundExt)
@@ -1790,32 +1790,32 @@ Expecting one of '${allowedValues.join("', '")}'`);
           } catch (err) {
             resolvedScriptPath = this._scriptPath;
           }
-          executableDir = path3.resolve(path3.dirname(resolvedScriptPath), executableDir);
+          executableDir = path4.resolve(path4.dirname(resolvedScriptPath), executableDir);
         }
         if (executableDir) {
           let localFile = findFile(executableDir, executableFile);
           if (!localFile && !subcommand._executableFile && this._scriptPath) {
-            const legacyName = path3.basename(this._scriptPath, path3.extname(this._scriptPath));
+            const legacyName = path4.basename(this._scriptPath, path4.extname(this._scriptPath));
             if (legacyName !== this._name) {
               localFile = findFile(executableDir, `${legacyName}-${subcommand._name}`);
             }
           }
           executableFile = localFile || executableFile;
         }
-        launchWithNode = sourceExt.includes(path3.extname(executableFile));
+        launchWithNode = sourceExt.includes(path4.extname(executableFile));
         let proc;
         if (process.platform !== "win32") {
           if (launchWithNode) {
             args.unshift(executableFile);
             args = incrementNodeInspectorPort(process.execArgv).concat(args);
-            proc = childProcess3.spawn(process.argv[0], args, { stdio: "inherit" });
+            proc = childProcess4.spawn(process.argv[0], args, { stdio: "inherit" });
           } else {
-            proc = childProcess3.spawn(executableFile, args, { stdio: "inherit" });
+            proc = childProcess4.spawn(executableFile, args, { stdio: "inherit" });
           }
         } else {
           args.unshift(executableFile);
           args = incrementNodeInspectorPort(process.execArgv).concat(args);
-          proc = childProcess3.spawn(process.execPath, args, { stdio: "inherit" });
+          proc = childProcess4.spawn(process.execPath, args, { stdio: "inherit" });
         }
         if (!proc.killed) {
           const signals = ["SIGUSR1", "SIGUSR2", "SIGTERM", "SIGINT", "SIGHUP"];
@@ -2604,7 +2604,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
        * @return {Command}
        */
       nameFromFilename(filename) {
-        this._name = path3.basename(filename, path3.extname(filename));
+        this._name = path4.basename(filename, path4.extname(filename));
         return this;
       }
       /**
@@ -2618,10 +2618,10 @@ Expecting one of '${allowedValues.join("', '")}'`);
        * @param {string} [path]
        * @return {string|null|Command}
        */
-      executableDir(path4) {
-        if (path4 === void 0)
+      executableDir(path5) {
+        if (path5 === void 0)
           return this._executableDir;
-        this._executableDir = path4;
+        this._executableDir = path5;
         return this;
       }
       /**
@@ -2854,21 +2854,54 @@ var {
   Help
 } = import_index.default;
 
-// commands/py.ts
-var childProcess = __toESM(require("child_process"));
+// commands/go.ts
+var os = __toESM(require("os"));
 var path = __toESM(require("path"));
-var py = new Command("py").description(
-  "Generate a Python project with Poetry"
+var childProcess = __toESM(require("child_process"));
+var go = new Command("go").description(
+  "Generate a Golang project with OpenAPI support"
 );
-py.requiredOption("-n, --name <name>", "Project name").option("-p, --private", "Initialize a private GH repo").option("-e, --emoji", "Use emoji commits").option("-l, --local", "Do not create remote repo").action((options) => {
-  const args = [options.name, options.local, options.private, options.emoji];
+go.requiredOption("-n, --name <name>", "Project name").option("-p, --private", "Initialize a private GH repo").option("-e, --emoji", "Use emoji commits").option("-l, --local", "Do not create remote repo").action((options) => {
+  const args = [
+    options.name,
+    options.local,
+    options.private,
+    options.emoji,
+    path.join(os.homedir(), "go", "src", "github.com", "julianstephens")
+  ];
   const base = childProcess.fork(
     path.join(__dirname, "..", "scripts", "base.mjs"),
     args
   );
   base.on("exit", (code) => {
     if (code === 0) {
-      childProcess.fork(path.join(__dirname, "..", "scripts", "py.mjs"), [
+      childProcess.fork(path.join(__dirname, "..", "scripts", "go.mjs"), [
+        options.name,
+        `${options.local}`,
+        "",
+        "",
+        path.join(os.homedir(), "go", "src", "github.com", "julianstephens")
+      ]);
+    }
+  });
+});
+var go_default = go;
+
+// commands/py.ts
+var childProcess2 = __toESM(require("child_process"));
+var path2 = __toESM(require("path"));
+var py = new Command("py").description(
+  "Generate a Python project with Poetry"
+);
+py.requiredOption("-n, --name <name>", "Project name").option("-p, --private", "Initialize a private GH repo").option("-e, --emoji", "Use emoji commits").option("-l, --local", "Do not create remote repo").action((options) => {
+  const args = [options.name, options.local, options.private, options.emoji];
+  const base = childProcess2.fork(
+    path2.join(__dirname, "..", "scripts", "base.mjs"),
+    args
+  );
+  base.on("exit", (code) => {
+    if (code === 0) {
+      childProcess2.fork(path2.join(__dirname, "..", "scripts", "py.mjs"), [
         options.name,
         `${options.local}`
       ]);
@@ -2878,8 +2911,8 @@ py.requiredOption("-n, --name <name>", "Project name").option("-p, --private", "
 var py_default = py;
 
 // commands/ts.ts
-var childProcess2 = __toESM(require("child_process"));
-var path2 = __toESM(require("path"));
+var childProcess3 = __toESM(require("child_process"));
+var path3 = __toESM(require("path"));
 var ts = new Command("ts").description("Generate a Typescript project with pnpm");
 ts.requiredOption("-n, --name <name>", "Project name").option("-r, --react", "Create a Vite React project").option("-p, --private", "Initialize a private GH repo").option("-e, --emoji", "Use emoji commits").option("-l, --local", "Do not create remote repo").action((options) => {
   const args = [
@@ -2889,13 +2922,13 @@ ts.requiredOption("-n, --name <name>", "Project name").option("-r, --react", "Cr
     options.emoji,
     options.react
   ];
-  const base = childProcess2.fork(
-    path2.join(__dirname, "..", "scripts", "base.mjs"),
+  const base = childProcess3.fork(
+    path3.join(__dirname, "..", "scripts", "base.mjs"),
     args
   );
   base.on("exit", (code) => {
     if (code === 0) {
-      childProcess2.fork(path2.join(__dirname, "..", "scripts", "ts.mjs"), args);
+      childProcess3.fork(path3.join(__dirname, "..", "scripts", "ts.mjs"), args);
     }
   });
 });
@@ -2903,7 +2936,7 @@ var ts_default = ts;
 
 // index.ts
 var program2 = new Command();
-program2.name("gen").description("CLI to generate a project template").version("0.1.0").addCommand(py_default).addCommand(ts_default);
+program2.name("gen").description("CLI to generate a project template").version("0.1.0").addCommand(py_default).addCommand(go_default).addCommand(ts_default);
 var main = async () => {
   await program2.parseAsync();
 };

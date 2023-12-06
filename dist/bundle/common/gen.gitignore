@@ -1,6 +1,7 @@
-# local env files
+# Environment variables
 .env*
-.env.*
+!.env.example
+!.env.vault
 
 # testing
 coverage

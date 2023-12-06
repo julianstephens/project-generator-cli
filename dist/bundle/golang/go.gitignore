@@ -1,0 +1,13 @@
+# macOS
+**/.DS_store
+
+# Go builds
+**/app/
+**/build/
+
+# Temporary files
+tmp/
+
+# Files
+*.out
+
